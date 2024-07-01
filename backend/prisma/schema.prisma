@@ -18,4 +18,18 @@ model User {
   email_verified_at String?
   createdOn         DateTime
   updatedOn         DateTime?
+
+  notes Note[]
+}
+
+model Note {
+  id        String @id @default(uuid())
+  userId    Int
+  title     String
+  content   String
+  parent    String?
+  createdOn DateTime
+  updatedOn DateTime?
+
+  user User @relation(fields: [userId], references: [id])
 }
