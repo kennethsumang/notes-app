@@ -1,0 +1,10 @@
+.noteitem_control {
+  background-color: transparent;
+  border: none;
+  transition: transform var(--accordion-transition-duration, .2s) ease;
+  transform: rotate(0deg);
+
+  &[data-active] {
+    transform: rotate(180deg);
+  }
+}

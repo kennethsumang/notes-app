@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: notes_pgsql
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    networks:
+      - host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_DB: ${PG_DB}
+  
+  # backend:
+  #   container_name: notes_backend
+  #   depends_on:
+  #     - mongodb
+  #     - postgres
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  
+  # frontend:
+  #   container_name: notes_frontend
+  #   depends_on:
+  #     - backend
+  #   build: 
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+
+volumes:
+  postgres_data:
+    external: true
+
+networks:
+  host:

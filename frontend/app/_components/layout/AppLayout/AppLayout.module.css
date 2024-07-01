@@ -1,0 +1,23 @@
+.main {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  padding-bottom: 1rem;
+  line-height: 1.25rem;
+}
+
+.logo {
+  border-radius: 100%;
+}
+
+.divider {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
