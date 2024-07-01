@@ -7,7 +7,7 @@ import { object, string } from "yup";
  * POST request handler
  * @author Kenneth Sumang
  */
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const schema = object({
     name: string().required(),
@@ -18,14 +18,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
   try {
     const validated = await schema.validate(body, { strict: true });
-    // this is for sample response
-    // return getSuccessResponse({
-    //   user: {
-    //     id: 1,
-    //     name: 'Admin',
-    //     email: 'admin@example.com'
-    //   },
-    // });
     const url = new URL(`${process.env.BACKEND_URL ?? ''}/auth/register`);
     const { retype_password, ...formData } = validated; 
     const response = await fetch(
