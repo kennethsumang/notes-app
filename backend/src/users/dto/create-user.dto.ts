@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 /**
  * CreateUserDto class
