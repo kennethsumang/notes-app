@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       const jsonResponse = await response.json();
       return getSuccessResponse(jsonResponse);
     }
-    console.log(await response.json());
+    
     throw new HttpException(response.status, response.statusText);
   } catch (e) {
     return getErrorResponse(e);

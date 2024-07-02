@@ -18,14 +18,18 @@ export async function POST(request: NextRequest) {
     const validated = await schema.validate(body, { strict: true });
 
     const url = new URL(`${process.env.BACKEND_URL ?? ''}/auth/login`);
+    const credentials = {
+      email: validated.email,
+      password: validated.password,
+    };
     const response = await fetch(
       url,
       {
         method: 'POST',
-        body: JSON.stringify({
-          email: validated.email,
-          password: validated.password,
-        }),
+        body: JSON.stringify(credentials),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
 
