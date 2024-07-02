@@ -36,7 +36,7 @@ export default class RequestLibrary {
         : JSON.stringify(body);
     }
 
-    requestInit.method = requestParams.method; console.log(url.toString());
+    requestInit.method = requestParams.method;
     const response = await fetch(
       url.toString(),
       {
