@@ -56,7 +56,6 @@ export default function LoginForm() {
 
     auth.loginUser(result.data!.user );
     setToken(() => result.data!.token);
-    notify.success("Login successful!");
     router.push("/app");
   }
 

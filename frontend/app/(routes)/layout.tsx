@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <MantineProvider theme={theme}>
-          <Notifications position="top-right" />
+          <Notifications position="top-right" style={{ zIndex: 99999 }} />
           {children}
         </MantineProvider>
       </body>
