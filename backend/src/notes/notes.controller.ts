@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
@@ -15,7 +17,16 @@ export class NotesController {
   constructor(private notesService: NotesService) {}
 
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('/')
+  async get() {
+    //
+  }
+
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('/')
-  async create(@Body() notesDto: CreateNoteDto) {}
+  async create(@Body() notesDto: CreateNoteDto, @Req() request) {
+    return this.notesService.createNote(notesDto, request.user);
+  }
 }
