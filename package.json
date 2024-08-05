@@ -1,0 +1,19 @@
+{
+  "name": "notes-app",
+  "version": "0.0.1",
+  "description": "Notes App",
+  "main": "index.js",
+  "repository": "https://github.com/nethzsumang/notes-app.git",
+  "author": "Kenneth Sumang <dev@kennethsumang.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start-dev-backend": "yarn --cwd backend/ start:dev",
+    "start-dev-frontend": "yarn --cwd frontend/ dev",
+    "install-all": "yarn --cwd backend/ && yarn --cwd frontend/",
+    "dev": "concurrently \"yarn:start-dev-*\""
+  }
+}
