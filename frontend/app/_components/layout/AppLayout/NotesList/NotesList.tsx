@@ -1,16 +1,20 @@
-import useNotification from "@/app/_hooks/useNotification";
-import RequestLibrary from "@/app/_libraries/request.library";
-import { useAuthStore } from "@/app/_store/auth.store";
-import { useNotesStore } from "@/app/_store/notes.store";
-import { NoteWithChildren } from "@/app/_types/notes";
-import { getCurrentDomain } from "@/app/_utils/http.util";
-import { Accordion, Center, NavLink } from "@mantine/core";
-import { IconFile } from "@tabler/icons-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import classes from "./NotesList.module.css";
+import useNotification from '@/app/_hooks/useNotification';
+import RequestLibrary from '@/app/_libraries/request.library';
+import { useAuthStore } from '@/app/_store/auth.store';
+import { useNotesStore } from '@/app/_store/notes.store';
+import { NoteWithChildren } from '@/app/_types/notes';
+import { getCurrentDomain } from '@/app/_utils/http.util';
+import { Accordion, Center, NavLink } from '@mantine/core';
+import { IconFile } from '@tabler/icons-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import classes from './NotesList.module.css';
 
-const NotesList: React.FC = function () {
+interface Props {
+  onNoteClick: (href: string) => void;
+}
+
+const NotesList: React.FC<Props> = function (props) {
   const notesListUpdateKey = useNotesStore((state) => state.notesListUpdateKey);
   const userId = useAuthStore((state) => state.user?.id);
   const pathname = usePathname();
@@ -28,10 +32,9 @@ const NotesList: React.FC = function () {
     try {
       const url = new URL(`${getCurrentDomain()}/api/notes`);
       url.searchParams.append('user_id', userId!.toString());
-      const response = await RequestLibrary.request<{ data: NoteWithChildren[] }>(
-        url.toString(),
-        { method: 'GET' },
-      );
+      const response = await RequestLibrary.request<{
+        data: NoteWithChildren[];
+      }>(url.toString(), { method: 'GET' });
       setNotes(response.data);
     } catch (e) {
       error((e as Error).message);
@@ -53,7 +56,7 @@ const NotesList: React.FC = function () {
         </NavLink>
       );
     }
-  
+
     return (
       <NavLink
         key={note.id}
@@ -68,18 +71,16 @@ const NotesList: React.FC = function () {
 
   function handleNavClick(e: React.MouseEvent, href: string) {
     e.preventDefault();
-    router.push(href);
+    props.onNoteClick(href);
   }
 
   return (
     <>
-      {
-        notes.map((value: NoteWithChildren) => {
-          return renderNote(value);
-        })
-      }
+      {notes.map((value: NoteWithChildren) => {
+        return renderNote(value);
+      })}
     </>
   );
-}
+};
 
 export default NotesList;
