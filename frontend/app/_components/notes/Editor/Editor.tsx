@@ -1,14 +1,14 @@
-import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import {ContentEditable} from '@lexical/react/LexicalContentEditable';
-import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
-import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
-import {LexicalErrorBoundary} from '@lexical/react/LexicalErrorBoundary';
-import classes from "./Editor.module.css";
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import classes from './Editor.module.css';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import EditorTheme from './EditorTheme';
-import "./styles.css";
+import './styles.css';
 
 interface Props {
   value: string;
@@ -30,7 +30,7 @@ const Editor: React.FC<Props> = function (props) {
   const initialConfig = {
     namespace: 'MyEditor',
     theme: EditorTheme,
-    editorState: props.value,
+    editorState: props.value || undefined,
     onError,
   };
 
@@ -47,16 +47,18 @@ const Editor: React.FC<Props> = function (props) {
             />
             <HistoryPlugin />
             <AutoFocusPlugin />
-            <OnChangePlugin onChange={(editorState) => {
-              editorState.read(() => {
-                props.onChange(JSON.stringify(editorState.toJSON()));
-              });
-            }} />
+            <OnChangePlugin
+              onChange={(editorState) => {
+                editorState.read(() => {
+                  props.onChange(JSON.stringify(editorState.toJSON()));
+                });
+              }}
+            />
           </div>
         </div>
-    </LexicalComposer>
+      </LexicalComposer>
     </div>
   );
-}
+};
 
 export default Editor;
