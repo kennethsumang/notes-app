@@ -54,6 +54,11 @@ const AppLayout: React.FC<Props> = function ({ children }) {
     router.push('/');
   }
 
+  function handleCreateNoteButtonClick() {
+    router.push('/app/notes/create');
+    toggle();
+  }
+
   function handleNoteLinkClick(href: string) {
     router.push(href);
     toggle();
@@ -96,7 +101,7 @@ const AppLayout: React.FC<Props> = function ({ children }) {
         }}
       >
         <div>
-          <NewButton onClick={() => router.push('/app/notes/create')} />
+          <NewButton onClick={handleCreateNoteButtonClick} />
           <div style={{ marginTop: rem(20) }}>
             <NavLink
               active={pathname === '/app'}
