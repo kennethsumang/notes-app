@@ -1,5 +1,4 @@
-import { Optional } from '@nestjs/common';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 /**
  * CreateNoteDto class
@@ -13,6 +12,6 @@ export default class CreateNoteDto {
   content: string;
 
   @IsString()
-  @Optional()
+  @IsOptional()
   parent?: string;
 }

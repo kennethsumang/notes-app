@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "concurrently": "^8.2.2"
   },
   "scripts": {
@@ -15,5 +16,8 @@
     "start-dev-frontend": "yarn --cwd frontend/ dev",
     "install-all": "yarn --cwd backend/ && yarn --cwd frontend/",
     "dev": "concurrently \"yarn:start-dev-*\""
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
   }
 }

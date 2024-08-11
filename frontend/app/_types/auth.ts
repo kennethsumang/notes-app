@@ -2,7 +2,7 @@ export interface AuthUser {
   id: number;
   name: string;
   email: string;
-  email_verified_at: string|null;
+  email_verified_at: string | null;
 }
 
 export interface RegisterForm {
@@ -14,5 +14,5 @@ export interface RegisterForm {
 
 export interface AuthApiResponse {
   user: AuthUser;
-  token: string;
+  accessToken: string;
 }

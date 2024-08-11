@@ -9,6 +9,8 @@ import { IconFile } from '@tabler/icons-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import classes from './NotesList.module.css';
+import useToken from '@/app/_hooks/useToken';
+import HttpException from '@/app/_exceptions/http.exception';
 
 interface Props {
   onNoteClick: (href: string) => void;
@@ -31,13 +33,17 @@ const NotesList: React.FC<Props> = function (props) {
   async function fetchNotes() {
     try {
       const url = new URL(`${getCurrentDomain()}/api/notes`);
-      url.searchParams.append('user_id', userId!.toString());
       const response = await RequestLibrary.request<{
         data: NoteWithChildren[];
       }>(url.toString(), { method: 'GET' });
       setNotes(response.data);
     } catch (e) {
-      error((e as Error).message);
+      if (e instanceof HttpException && e.code === 401) {
+        error('You need to login to continue.');
+        router.push('/');
+      } else {
+        error((e as Error).message);
+      }
     }
   }
 

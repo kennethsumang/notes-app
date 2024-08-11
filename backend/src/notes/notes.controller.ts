@@ -19,14 +19,14 @@ export class NotesController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/')
-  async get() {
-    //
+  async get(@Req() request) {
+    return this.notesService.getNotes(request.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('/')
   async create(@Body() notesDto: CreateNoteDto, @Req() request) {
-    return this.notesService.createNote(notesDto, request.user);
+    return this.notesService.createNote(notesDto, request.user.userId);
   }
 }

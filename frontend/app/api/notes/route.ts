@@ -1,11 +1,13 @@
 import HttpException from '@/app/_exceptions/http.exception';
+import UnauthorizedException from '@/app/_exceptions/unauthorized.exception';
 import {
   getErrorResponse,
   getSuccessResponse,
 } from '@/app/_helpers/api-response.helper';
 import _ from 'lodash';
 import { NextRequest, NextResponse } from 'next/server';
-import { ValidationError, number, object, string } from 'yup';
+import { number, object, string } from 'yup';
+import { getDecryptedCookie } from '../_libraries/cookie.library';
 
 /**
  * POST request handler
@@ -13,66 +15,54 @@ import { ValidationError, number, object, string } from 'yup';
  */
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.json();
+  const token = getDecryptedCookie('token');
   const schema = object({
     title: string().required(),
     content: string().required(),
-    user_id: number().required(),
     parent: string().optional(),
-    token: string().required(),
   });
 
   try {
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
     const validated = await schema.validate(body, { strict: true });
-    const bodyData = _.omit(validated, ['token']);
     const url = new URL(`${process.env.BACKEND_URL ?? ''}/notes`);
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify(bodyData),
+      body: JSON.stringify(validated),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${validated.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const jsonResponse = await response.json();
       return getSuccessResponse(jsonResponse);
     }
 
     throw new HttpException(response.status, response.statusText);
-    // sample data
-    // return getSuccessResponse({
-    //   id: 'e13ae390-3400-4370-88c0-fd7e797e26c7',
-    //   user_id: 1,
-    //   title: 'New Note',
-    //   content:
-    //     '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hello, World!","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-    // });
   } catch (e) {
     return getErrorResponse(e);
   }
 }
 
 export async function GET(request: NextRequest, response: NextResponse) {
-  const searchParams = request.nextUrl.searchParams;
-  const user_id = Number(searchParams.get('user_id'));
-  const schema = object({
-    user_id: number().required(),
-    token: string().required(),
-  });
-  const params = {
-    user_id: user_id,
-  };
+  const token = getDecryptedCookie('token');
 
   try {
-    const validated = await schema.validate(params, { strict: true });
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
     const url = new URL(`${process.env.BACKEND_URL ?? ''}/notes`);
     const response = await fetch(url, {
       method: 'GET',
-      body: JSON.stringify(validated),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${validated.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 

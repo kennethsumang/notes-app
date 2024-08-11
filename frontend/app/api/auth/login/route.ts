@@ -1,7 +1,12 @@
-import HttpException from "@/app/_exceptions/http.exception";
-import { getErrorResponse, getSuccessResponse } from "@/app/_helpers/api-response.helper";
-import { NextRequest, NextResponse } from "next/server";
-import { object, string } from "yup";
+import HttpException from '@/app/_exceptions/http.exception';
+import {
+  getErrorResponse,
+  getSuccessResponse,
+} from '@/app/_helpers/api-response.helper';
+import { AuthApiResponse } from '@/app/_types/auth';
+import { NextRequest, NextResponse } from 'next/server';
+import { object, string } from 'yup';
+import { setEncryptedCookie } from '../../_libraries/cookie.library';
 
 /**
  * POST request handler
@@ -22,19 +27,18 @@ export async function POST(request: NextRequest) {
       email: validated.email,
       password: validated.password,
     };
-    const response = await fetch(
-      url,
-      {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (response.status === 200) {
-      const jsonResponse = await response.json();
+      const jsonResponse = (await response.json()) as AuthApiResponse;
+      const accessToken = jsonResponse.accessToken;
+      setEncryptedCookie('token', accessToken);
       return getSuccessResponse(jsonResponse);
     }
 

@@ -8,12 +8,19 @@ export class NotesService {
   constructor(private prismaService: PrismaService) {}
 
   async createNote(notesDto: CreateNoteDto, userId: number) {
-    return await this.prismaService.note.create({
+    const newNote = await this.prismaService.note.create({
       data: {
         ...notesDto,
         user: { connect: { id: userId } },
         createdOn: getCurrentUtc(),
       },
+    });
+    return { data: newNote };
+  }
+
+  async getNotes(userId: number) {
+    return await this.prismaService.note.findMany({
+      where: { userId },
     });
   }
 }

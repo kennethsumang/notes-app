@@ -34,11 +34,20 @@ const NoteForm: React.FC<Props> = function ({ note = null }) {
 
   async function requestSave() {
     try {
+      const data: { title: string; content: string; parent?: string } = {
+        title,
+        content,
+      };
+
+      if (parent) {
+        data.parent = parent;
+      }
+
       const response = await RequestLibrary.request<{ data: Note }>(
         `${getCurrentDomain()}/api/notes`,
         {
           method: 'POST',
-          data: { title, content, parent },
+          data,
         },
       );
 
