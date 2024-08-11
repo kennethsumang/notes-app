@@ -100,7 +100,13 @@ const AppLayout: React.FC<Props> = function ({ children }) {
           justifyContent: 'space-between',
         }}
       >
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'calc(-2rem + 100%)',
+          }}
+        >
           <NewButton onClick={handleCreateNoteButtonClick} />
           <div style={{ marginTop: rem(20) }}>
             <NavLink
@@ -112,7 +118,16 @@ const AppLayout: React.FC<Props> = function ({ children }) {
             />
           </div>
           <Divider className={classes.divider} />
-          <NotesList onNoteClick={handleNoteLinkClick} />
+          <div
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              height: '0px',
+              marginBottom: '8px ',
+            }}
+          >
+            <NotesList onNoteClick={handleNoteLinkClick} />
+          </div>
         </div>
         <div>
           <LogoutButton onLogout={handleLogoutClick} />
