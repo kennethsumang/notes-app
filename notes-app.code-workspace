@@ -34,7 +34,8 @@
       "Gruntfuggly.todo-tree",
       "eamodio.gitlens",
       "aaron-bond.better-comments",
-      "dsznajder.es7-react-js-snippets"
+      "dsznajder.es7-react-js-snippets",
+      "humao.rest-client"
     ]
   }
 }
