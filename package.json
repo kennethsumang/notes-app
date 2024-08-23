@@ -14,6 +14,7 @@
   "scripts": {
     "start-dev-backend": "yarn --cwd backend/ start:dev",
     "start-dev-frontend": "yarn --cwd frontend/ dev",
+    "start-dev-xplatform": "cd xplatform && flutter run -d Chrome",
     "install-all": "yarn --cwd backend/ && yarn --cwd frontend/",
     "dev": "concurrently \"yarn:start-dev-*\""
   },
