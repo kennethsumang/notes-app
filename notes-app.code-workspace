@@ -41,7 +41,8 @@
       "aaron-bond.better-comments",
       "dsznajder.es7-react-js-snippets",
       "humao.rest-client",
-      "Dart-Code.flutter"
+      "Dart-Code.flutter",
+      "FelixAngelov.bloc"
     ]
   }
 }
