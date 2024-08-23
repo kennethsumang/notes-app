@@ -30,6 +30,10 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+.fvm/flutter_sdk
+.packages
+coverage/
+lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
