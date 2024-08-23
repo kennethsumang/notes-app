@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/common/services/prisma.service';
 import CreateNoteDto from './dto/create-note.dto';
 import { getCurrentUtc } from 'src/common/libraries/date.library';
+import UpdateNoteDto from './dto/update-note.dto';
 
 @Injectable()
 export class NotesService {
@@ -21,6 +22,19 @@ export class NotesService {
   async getNotes(userId: number) {
     return await this.prismaService.note.findMany({
       where: { userId },
+    });
+  }
+
+  async updateNote(noteId: string, notesDto: UpdateNoteDto, userId: number) {
+    return await this.prismaService.note.update({
+      where: { id: noteId, userId: userId },
+      data: { ...notesDto },
+    });
+  }
+
+  async deleteNote(noteId: string, userId: number) {
+    return await this.prismaService.note.delete({
+      where: { id: noteId, userId: userId },
     });
   }
 }
