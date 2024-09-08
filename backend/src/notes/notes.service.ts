@@ -25,6 +25,12 @@ export class NotesService {
     });
   }
 
+  async fetchOneNote(noteId: string, userId: number) {
+    return await this.prismaService.note.findFirstOrThrow({
+      where: { id: noteId, userId: userId },
+    });
+  }
+
   async updateNote(noteId: string, notesDto: UpdateNoteDto, userId: number) {
     return await this.prismaService.note.update({
       where: { id: noteId, userId: userId },

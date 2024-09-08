@@ -28,6 +28,13 @@ export class NotesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get(':noteId')
+  async fetchOne(@Req() request, @Param() params) {
+    return this.notesService.fetchOneNote(params.noteId, request.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('/')
   async create(@Body() notesDto: CreateNoteDto, @Req() request) {
