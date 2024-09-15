@@ -7,7 +7,7 @@ import {
 import _ from 'lodash';
 import { NextRequest, NextResponse } from 'next/server';
 import { number, object, string } from 'yup';
-import { getDecryptedCookie } from '../_libraries/cookie.library';
+import { getSessionData } from '../_libraries/iron-session.library';
 
 /**
  * POST request handler
@@ -15,7 +15,7 @@ import { getDecryptedCookie } from '../_libraries/cookie.library';
  */
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.json();
-  const token = getDecryptedCookie('token');
+  const token = getSessionData('accessToken');
   const schema = object({
     title: string().required(),
     content: string().required(),
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 }
 
 export async function GET(request: NextRequest, response: NextResponse) {
-  const token = getDecryptedCookie('token');
+  const token = await getSessionData('accessToken');
 
   try {
     if (!token) {

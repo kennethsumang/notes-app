@@ -4,7 +4,6 @@ import UnauthorizedException from '@/app/_exceptions/unauthorized.exception';
 import RequestLibrary from '@/app/_libraries/request.library';
 import { NoteWithChildren } from '@/app/_types/notes';
 import { getCurrentDomain } from '@/app/_utils/http.util';
-import { redirect } from 'next/navigation';
 
 interface Props {
   children: React.ReactNode;
@@ -24,11 +23,13 @@ async function fetchNotes(): Promise<NoteWithChildren[] | null> {
     }>(url.toString(), { method: 'GET' });
     return response.data as NoteWithChildren[];
   } catch (e) {
+    console.error(e);
     if (
       e instanceof UnauthorizedException ||
       (e instanceof HttpException && e.code === 401)
     ) {
-      redirect('/');
+      // redirect('/');
+      return null;
     } else {
       return null;
     }

@@ -3,16 +3,16 @@ import {
   getSuccessResponse,
 } from '@/app/_helpers/api-response.helper';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDecryptedCookie } from '../../_libraries/cookie.library';
 import UnauthorizedException from '@/app/_exceptions/unauthorized.exception';
 import HttpException from '@/app/_exceptions/http.exception';
+import { getSessionData } from '../../_libraries/iron-session.library';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
   const id = params.id;
-  const token = getDecryptedCookie('token');
+  const token = await getSessionData('accessToken');
 
   try {
     if (!token) {

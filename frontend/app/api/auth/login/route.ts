@@ -6,7 +6,7 @@ import {
 import { AuthApiResponse } from '@/app/_types/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { object, string } from 'yup';
-import { setEncryptedCookie } from '../../_libraries/cookie.library';
+import { setSessionData } from '../../_libraries/iron-session.library';
 
 /**
  * POST request handler
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     if (response.status === 200) {
       const jsonResponse = (await response.json()) as AuthApiResponse;
       const accessToken = jsonResponse.accessToken;
-      setEncryptedCookie('token', accessToken);
+      await setSessionData('accessToken', accessToken);
       return getSuccessResponse(jsonResponse);
     }
 

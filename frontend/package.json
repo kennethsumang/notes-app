@@ -17,6 +17,7 @@
     "@mantine/notifications": "^7.10.2",
     "@tabler/icons-react": "^3.7.0",
     "dayjs": "^1.11.11",
+    "iron-session": "^8.0.3",
     "lexical": "^0.16.0",
     "lodash": "^4.17.21",
     "next": "14.2.4",
