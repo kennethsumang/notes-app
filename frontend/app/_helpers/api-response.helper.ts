@@ -15,7 +15,7 @@ export function getErrorResponse(e: unknown): Response {
       {
         status: error.code,
         statusText:
-          'Oops! It seems you don’t have the necessary permissions to access this resource. Please check your credentials or contact the administrator for assistance.',
+          "Oops! It seems you don't have the necessary permissions to access this resource. Please check your credentials or contact the administrator for assistance.",
       },
     );
   }

@@ -1,6 +1,7 @@
 import HttpException from '../_exceptions/http.exception';
+import UnauthorizedException from '../_exceptions/unauthorized.exception';
 
-interface RequestParams {
+export interface RequestParams {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   params?: Record<string, string>;
   data?: Record<string, unknown> | FormData;
@@ -21,6 +22,7 @@ export default class RequestLibrary {
     baseUrl: string,
     requestParams: RequestParams,
   ): Promise<T> => {
+    console.log('[REQUEST LIBRARY] ', baseUrl, requestParams);
     const params = requestParams.params ?? undefined;
     const body = requestParams.data ?? undefined;
     const requestInit: RequestInit = {
@@ -47,6 +49,10 @@ export default class RequestLibrary {
       body: requestInit.body,
       headers: requestInit.headers,
     });
+
+    if (response.status === 401) {
+      throw new UnauthorizedException();
+    }
 
     if (response.status !== 200 && response.status !== 201) {
       throw new HttpException(response.status, response.statusText);

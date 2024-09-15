@@ -1,4 +1,5 @@
 import NoteForm from '@/app/_components/notes/NoteForm/NoteForm';
+import UnauthorizedException from '@/app/_exceptions/unauthorized.exception';
 import RequestLibrary from '@/app/_libraries/request.library';
 import { Note } from '@/app/_types/notes';
 import { getCurrentDomain } from '@/app/_utils/http.util';
@@ -14,8 +15,12 @@ const Page = async function ({ params }: { params: { id: string } }) {
     const note = response.data;
     return <NoteForm note={note} />;
   } catch (e) {
-    console.log(e);
-    redirect('/app');
+    console.error(e);
+    // if (e instanceof UnauthorizedException) {
+    //   redirect('/');
+    // } else {
+    //   redirect('/app');
+    // }
   }
 };
 

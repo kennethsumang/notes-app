@@ -13,39 +13,12 @@ import useToken from '@/app/_hooks/useToken';
 import HttpException from '@/app/_exceptions/http.exception';
 
 interface Props {
+  notes: NoteWithChildren[];
   onNoteClick: (href: string) => void;
 }
 
-const NotesList: React.FC<Props> = function (props) {
-  const notesListUpdateKey = useNotesStore((state) => state.notesListUpdateKey);
-  const userId = useAuthStore((state) => state.user?.id);
+const NotesList: React.FC<Props> = function ({ notes, onNoteClick }) {
   const pathname = usePathname();
-  const router = useRouter();
-  const [notes, setNotes] = useState<NoteWithChildren[]>([]);
-  const { error } = useNotification();
-
-  useEffect(() => {
-    if (userId) {
-      fetchNotes();
-    }
-  }, [notesListUpdateKey, userId]);
-
-  async function fetchNotes() {
-    try {
-      const url = new URL(`${getCurrentDomain()}/api/notes`);
-      const response = await RequestLibrary.request<{
-        data: NoteWithChildren[];
-      }>(url.toString(), { method: 'GET' });
-      setNotes(response.data);
-    } catch (e) {
-      if (e instanceof HttpException && e.code === 401) {
-        error('You need to login to continue.');
-        router.push('/');
-      } else {
-        error((e as Error).message);
-      }
-    }
-  }
 
   function renderNote(note: NoteWithChildren): React.ReactNode {
     if (note.children) {
@@ -77,7 +50,7 @@ const NotesList: React.FC<Props> = function (props) {
 
   function handleNavClick(e: React.MouseEvent, href: string) {
     e.preventDefault();
-    props.onNoteClick(href);
+    onNoteClick(href);
   }
 
   return (

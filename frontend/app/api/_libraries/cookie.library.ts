@@ -2,15 +2,14 @@ import { cookies } from 'next/headers';
 import AES from 'crypto-js/aes';
 import Utf8 from 'crypto-js/enc-utf8';
 
-// Define an encryption key. In a real-world application, store this securely.
-const ENCRYPTION_KEY = process.env.FRONTEND_COOKIE_SECRET || ''; // Must be 32 characters for AES-256
-
 /**
  * Encrypts the cookie value using AES-256.
  * @param value - The value to encrypt.
  * @returns Encrypted string.
  */
 const encryptCookieValue = (value: string): string => {
+  // Define an encryption key. In a real-world application, store this securely.
+  const ENCRYPTION_KEY = process.env.FRONTEND_COOKIE_SECRET || ''; // Must be 32 characters for AES-256
   return AES.encrypt(value, ENCRYPTION_KEY).toString();
 };
 
@@ -20,6 +19,8 @@ const encryptCookieValue = (value: string): string => {
  * @returns Decrypted string.
  */
 const decryptCookieValue = (value: string): string => {
+  // Define an encryption key. In a real-world application, store this securely.
+  const ENCRYPTION_KEY = process.env.FRONTEND_COOKIE_SECRET || ''; // Must be 32 characters for AES-256
   const bytes = AES.decrypt(value, ENCRYPTION_KEY);
   return bytes.toString(Utf8);
 };
@@ -32,7 +33,12 @@ const decryptCookieValue = (value: string): string => {
  */
 export const setEncryptedCookie = (name: string, value: string) => {
   const encryptedValue = encryptCookieValue(value);
-  cookies().set(name, encryptedValue, { secure: true });
+  cookies().set(name, encryptedValue, {
+    secure: true,
+    httpOnly: true,
+    path: '/',
+    sameSite: 'lax',
+  });
 };
 
 /**
@@ -47,4 +53,12 @@ export const getDecryptedCookie = (name: string): string | null => {
 
   const value = cookies().get(name)?.value as string;
   return decryptCookieValue(value);
+};
+
+/**
+ * Deletes the cookie by name
+ * @param name - The name of the cookie.
+ */
+export const deleteCookie = (name: string) => {
+  cookies().delete(name);
 };

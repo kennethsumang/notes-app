@@ -23,12 +23,14 @@ import NewButton from './NewButton/NewButton';
 import { IconHome2 } from '@tabler/icons-react';
 import classes from './AppLayout.module.css';
 import NotesList from './NotesList/NotesList';
+import { NoteWithChildren } from '@/app/_types/notes';
 
 interface Props {
+  notes: NoteWithChildren[];
   children: React.ReactNode;
 }
 
-const AppLayout: React.FC<Props> = function ({ children }) {
+const AppLayout: React.FC<Props> = function ({ notes, children }) {
   const { removeToken } = useToken();
   const router = useRouter();
   const pathname = usePathname();
@@ -126,7 +128,7 @@ const AppLayout: React.FC<Props> = function ({ children }) {
               marginBottom: '8px ',
             }}
           >
-            <NotesList onNoteClick={handleNoteLinkClick} />
+            <NotesList notes={notes} onNoteClick={handleNoteLinkClick} />
           </div>
         </div>
         <div>

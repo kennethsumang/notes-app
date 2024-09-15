@@ -12,14 +12,12 @@ export async function GET(
   { params }: { params: { id: string } },
 ) {
   const id = params.id;
-
   const token = getDecryptedCookie('token');
 
   try {
     if (!token) {
       throw new UnauthorizedException();
     }
-
     const url = new URL(`${process.env.BACKEND_URL ?? ''}/notes/${id}`);
     const response = await fetch(url, {
       method: 'GET',
